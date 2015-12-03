@@ -3,14 +3,14 @@
 #include <math.h>
 #include <time.h>
 
-int FFT(double *x_r, double *x_i, double *y_r, double *y_i, double *z_r, double *z_i, int N);
-int Initial(double *x, double *y, int N);
+void FFT(double *x_r, double *x_i, double *y_r, double *y_i, double *z_r, double *z_i, int N);
+void Initial(double *x, double *y, int N);
 int Print_Complex_Vector(double *y_r, double *y_i, int N);
 
 int main()
 {
-	int i, k, n, m, N;
-	double *y_r, *y_i, *x_r, *x_i, *z_r, *z_i, w_r, w_i, everage, *t;
+	int i, m, N;
+	double *y_r, *y_i, *x_r, *x_i, *z_r, *z_i, everage, *t;
 	clock_t t1, t2;
 
 	
@@ -18,7 +18,7 @@ int main()
 	scanf("%d",&N);
 	printf("N = %d \n", N);
 	
-	m = 10000;
+	m = 10;
 	x_r = (double *) malloc(N*sizeof(double));
 	x_i = (double *) malloc(N*sizeof(double));	
 	z_r = (double *) malloc((2*N+2)*sizeof(double));
@@ -31,22 +31,22 @@ int main()
 	t1 = clock();
 	for(i=0;i<m;i++)
 	{
-//		t1 = clock();
+		t1 = clock();
 		FFT(x_r, x_i, y_r, y_i, z_r, z_i, N);
-//		t2 = clock();
-//		t[i] = 1.0*(t2-t1)/CLOCKS_PER_SEC;
-//		printf("Fast FTT: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
+		t2 = clock();
+		t[i] = 1.0*(t2-t1)/CLOCKS_PER_SEC;
+		printf("Fast FTT: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
 	}
 	t2 = clock();
-	printf("Fast FTT: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
-/*	everage = 0;
+	printf("FDST: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
+	everage = 0;
 	for(i=0;i<m;i++)
 	{
 		everage = everage + t[i];	
 	}
 	everage = everage / m;
 	printf("everage time: %f \n", everage);
-*/	
+
 /*	for(i=0;i<N;i++)
 	{
 		printf("%d: %f \n", i, z_r[i]);
@@ -57,7 +57,7 @@ int main()
 	return 0;
 } 
 
-int Initial(double *x, double *y, int N)
+void Initial(double *x, double *y, int N)
 {
 	int n;
 	for(n=0;n<N;++n)
@@ -80,7 +80,7 @@ int Print_Complex_Vector(double *y_r, double *y_i, int N)
 
 
 // Consider Cx[k] = \sum_{n=0}^{N-1} 2x[n]cos(pi*k*(2n+1)/2N) for 0 <= k < N
-int FFT(double *x_r, double *x_i, double *y_r, double *y_i,double *z_r, double *z_i, int N)
+void FFT(double *x_r, double *x_i, double *y_r, double *y_i,double *z_r, double *z_i, int N)
 {
 	int i, j, p, q, r, pp, qq, bse, L, M;
 	L = 2*N + 2;

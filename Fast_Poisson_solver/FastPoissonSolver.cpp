@@ -4,20 +4,20 @@
 #include <time.h>
 #define Gauss 1
 double Error(double **X, double **U, int N);
-int Print_Matrix(double **A, int N);
-int Exact_Solution(double **U, int N);
-int Exact_Source(double **F, int N);
-int DST(double *x, int N);
-int iDST(double *x, int N);
-int Transpose(double **A, int N);
-int Fast_Poisson_Solver(double **F, double **X, int N);
+void Print_Matrix(double **A, int N);
+void Exact_Solution(double **U, int N);
+void Exact_Source(double **F, int N);
+void DST(double *x, int N);
+void iDST(double *x, int N);
+void Transpose(double **A, int N);
+void Fast_Poisson_Solver(double **F, double **X, int N);
 
 int main()
 {
-	int i, j, k, N, L, p; 
-	double **X, **U, *b, **F, *r;
+	int i, N, L, p; 
+	double **X, **U, **F;
 	clock_t t1, t2;
-	p = pow(2, 10);
+	p = pow(2, 12);
 	// Create memory for solving Ax = b, where r = b-Ax is the residue.
 	for(N=4;N<=p;N*=2)
 	{
@@ -46,20 +46,19 @@ int main()
 		t1 = clock();
 		Fast_Poisson_Solver(F, X, L);
 		t2 = clock();
-		printf("Fast Poisson Solver: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
+		printf(" Fast Poisson Solver: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
 		printf(" For N = %d error = %e \n", N, Error(X, U, L));
-
+		printf(" \n");
 		free(X);
 		free(U);
 		free(F);
-		//system("pause");
 	}
 	return 0;
 }
-int Exact_Solution(double **U, int N)
+void Exact_Solution(double **U, int N)
 {
 	// put the exact solution 
-	int i,j,k;
+	int i,j;
 	double x, y, h;
 	h = 1.0/N;
 	for(i=0;i<N-1;++i)
@@ -73,9 +72,9 @@ int Exact_Solution(double **U, int N)
 		}
 	}
 }
-int Exact_Source(double **F, int N)
+void Exact_Source(double **F, int N)
 {
-	int i,j,k;
+	int i,j;
 	double x, y, h;
 	h = 1.0/N;
 	for(i=0;i<N-1;++i)
@@ -89,7 +88,7 @@ int Exact_Source(double **F, int N)
 		}
 	}	
 }
-int Print_Matrix(double **A, int N)
+void Print_Matrix(double **A, int N)
 {
 	int i, j;
 	for(i=0;i<N;++i)
@@ -119,7 +118,7 @@ double Error(double **X, double **U, int N)
 }
 
 // Fast Fourier Transform in place for N = 2^p 
-int DST(double *x, int N)
+void DST(double *x, int N)
 {
 	int i, j, k, n, M, K;
 	double t_r, t_i, *x_r, *x_i, *y_r, *y_i;
@@ -204,7 +203,7 @@ int DST(double *x, int N)
 	}
 	
 }
-int iDST(double *x, int N)
+void iDST(double *x, int N)
 {
 	int i;
 	double s;
@@ -212,7 +211,7 @@ int iDST(double *x, int N)
 	DST(x, N);
 	for(i=0;i<N;i++) x[i] = s*x[i];
 }
-int Transpose(double **A, int N)
+void Transpose(double **A, int N)
 {
 	int i, j;
 	double v;
@@ -225,9 +224,8 @@ int Transpose(double **A, int N)
 			A[j][i] = v;
 		}
 	}
-	return 0;
 }
-int Fast_Poisson_Solver(double **F, double **X, int N)
+void Fast_Poisson_Solver(double **F, double **X, int N)
 {
 	int i, j;
 	double h, *lamda, **Xbar;
