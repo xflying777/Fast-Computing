@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#define Gauss 1
+
 double Error(double **X, double **U, int N);
 void Print_Matrix(double **A, int N);
 void Exact_Solution(double **U, int N);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#define Gauss 1
+#define Gauss 2
 double Residual(double *r, double **A, double *x, double *b, int N);
 double Error(double *x, double *u, int N);
 int Exact_Discretization(double **A, int N);

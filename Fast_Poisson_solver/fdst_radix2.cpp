@@ -3,20 +3,20 @@
 #include <math.h>
 #include <time.h>
 
-int FFTr2(double *x_r, double *x_i, double *y_r, double *y_i, int N, int L);
-int Initial(double *x, double *y, int N);
+void FFTr2(double *x_r, double *x_i, double *y_r, double *y_i, int N, int L);
+void Initial(double *x, double *y, int N);
 int Generate_N(int p);
 
 int main()
 {
-	int k, n, p, N, L;
-	double *y_r, *y_i, *x_r, *x_i, w_r, w_i;
+	int p, N, L;
+	double *y_r, *y_i, *x_r, *x_i;
 	clock_t t1, t2;
 	
-	printf("Please input p =");
+	printf(" Please input p ( N = 2^p ) = ");
 	scanf("%d",&p);
 	N = Generate_N(p);
-	printf("N=2^%d - 1 = %d\n",p,N);
+	printf(" N=2^%d - 1 = %d\n",p,N);
 	L = 2*N + 2;
 	
 	x_r = (double *) malloc(N*sizeof(double));
@@ -28,15 +28,16 @@ int main()
 	t1 = clock();
 	FFTr2(x_r, x_i, y_r, y_i, N, L);
 	t2 = clock();
-	printf("Fast FT2: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
-	for(k=0;k<N;k++)
+	printf(" Fast FDSTR2: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
+/*	for(k=0;k<N;k++)
 	{
-		printf("%d = %f \n", k, y_r[k]);
+		printf(" %d = %f \n", k, y_r[k]);
 	}
+*/
 	return 0;
 } 
 
-int Initial(double *x, double *y, int N)
+void Initial(double *x, double *y, int N)
 {
 	int n;
 	for(n=0;n<N;++n)
@@ -54,7 +55,7 @@ int Generate_N(int p)
 	return N;
 }
 
-int FFTr2(double *x_r, double *x_i, double *y_r, double *y_i, int N, int L)
+void FFTr2(double *x_r, double *x_i, double *y_r, double *y_i, int N, int L)
 {
 	int i, j, k, n, M;
 	double t_r, t_i;
