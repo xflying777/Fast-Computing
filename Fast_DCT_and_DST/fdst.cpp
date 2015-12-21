@@ -18,7 +18,7 @@ int main()
 	scanf("%d",&N);
 	printf("N = %d \n", N);
 	
-	m = 10;
+	m = 3;
 	x_r = (double *) malloc(N*sizeof(double));
 	x_i = (double *) malloc(N*sizeof(double));	
 	z_r = (double *) malloc((2*N+2)*sizeof(double));
@@ -28,25 +28,21 @@ int main()
 	t = (double *) malloc(m*sizeof(double));
 	
 	Initial(x_r, x_i, N);
-	t1 = clock();
 	for(i=0;i<m;i++)
 	{
 		t1 = clock();
 		FFT(x_r, x_i, y_r, y_i, z_r, z_i, N);
 		t2 = clock();
 		t[i] = 1.0*(t2-t1)/CLOCKS_PER_SEC;
-		printf("Fast FTT: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
 	}
-	t2 = clock();
-	printf("FDST: %f secs\n", 1.0*(t2-t1)/CLOCKS_PER_SEC);
 	everage = 0;
 	for(i=0;i<m;i++)
 	{
 		everage = everage + t[i];	
 	}
 	everage = everage / m;
-	printf("everage time: %f \n", everage);
-
+	printf(" everage time: %f \n", everage);
+	printf(" data[%d] = %f , data[%d] = %f \n", 0, z_r[0], N-1, z_r[N-1]);
 /*	for(i=0;i<N;i++)
 	{
 		printf("%d: %f \n", i, z_r[i]);
